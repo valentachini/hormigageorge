@@ -5,12 +5,12 @@ async function getTweets() {
   tweetsContainer.innerHTML = "<p>Actualizando...</p>";
 
   try {
-    const res = await fetch(`https://corsproxy.io/?https://nitter.net/${TWITTER_USERNAME}`);
+    const res = await fetch(`https://corsproxy.io/?https://nitter.poast.org/${TWITTER_USERNAME}`);
     const text = await res.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, "text/html");
 
-    const tweets = [...doc.querySelectorAll(".timeline-item .tweet-content")]
+    const tweets = [...doc.querySelectorAll(".tweet-content")]
       .slice(0, 2)
       .map(el => `<p>${el.textContent.trim()}</p>`)
       .join("");
