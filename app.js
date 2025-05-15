@@ -5,7 +5,7 @@ async function getTweets() {
   tweetsContainer.innerHTML = "<p>Actualizando...</p>";
 
   try {
-    const res = await fetch(`https://corsproxy.io/?https://nitter.poast.org/${TWITTER_USERNAME}`);
+    const res = await fetch(`https://api.allorigins.win/raw?url=https://nitter.poast.org/${TWITTER_USERNAME}`);
     const text = await res.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, "text/html");
