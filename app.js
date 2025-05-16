@@ -5,12 +5,21 @@ async function getTweets() {
   tweetsContainer.innerHTML = "<p>Actualizando...</p>";
 
   try {
-    const res = await fetch(`https://api.allorigins.win/raw?url=https://nitter.poast.org/${TWITTER_USERNAME}`);
+    const url = `https://api.allorigins.win/raw?url=https://nitter.poast.org/${TWITTER_USERNAME}`;
+    console.log("Fetching from:", url);
+
+    const res = await fetch(url);
     const text = await res.text();
+
+    console.log("HTML recibido:");
+    console.log(text.slice(0, 1000));
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, "text/html");
 
-    const tweets = [...doc.querySelectorAll(".tweet-content")]
+    const tweetNodes = [...doc.querySelectorAll(".tweet-content")];
+    console.log(`Tweets encontrados: ${tweetNodes.length}`);
+
+    const tweets = tweetNodes
       .slice(0, 2)
       .map(el => `<p>${el.textContent.trim()}</p>`)
       .join("");
@@ -18,7 +27,7 @@ async function getTweets() {
     tweetsContainer.innerHTML = tweets || "<p>No se encontraron tweets.</p>";
   } catch (err) {
     tweetsContainer.innerHTML = "<p>Error al cargar tweets 😢</p>";
-    console.error(err);
+    console.error("Error capturado:", err);
   }
 }
 
