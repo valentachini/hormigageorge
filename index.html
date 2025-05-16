@@ -5,21 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>La hormiga George</title>
   <link rel="stylesheet" href="style.css">
-  <meta name="theme-color" content="#f0f4f8">
   <link rel="manifest" href="/manifest.json">
   <link rel="icon" href="/media/antIcon.png" type="image/png">
-
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 </head>
 <body>
   <main>
-    <h1>Clima según George 🌤️</h1>
-    <div id="tweets">
-      <p>Cargando tweets...</p>
+    <div class="logo">
+      <img src="media/antIcon.png" alt="Hormiga George" width="64">
+      <h1>Clima según la hormiga George</h1>
     </div>
-    <button id="power">Encender a George</button>
-    <button id="refresh" disabled>Actualizar</button>
 
+    <div class="controls">
+      <button id="power">Despertar a George</button>
+      <button id="refresh" disabled>Actualizar</button>
+    </div>
+
+    <div id="tweets">
+      <p>George está dormido 😴</p>
+    </div>
   </main>
+
   <script src="app.js"></script>
 </body>
 </html>
