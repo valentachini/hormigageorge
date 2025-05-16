@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     }
 
     
-    const tweetsRes = await fetch(`https://api.twitter.com/2/users/${userId}/tweets?max_results=5&tweet.fields=text`, {
+    const tweetsRes = await fetch(`https://api.twitter.com/2/users/${userId}/tweets?max_results=5&tweet.fields=text&exclude=replies`, {
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
       }
