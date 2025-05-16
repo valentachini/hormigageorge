@@ -1,14 +1,13 @@
+let georgeAwake = false;
+
 async function getTweets() {
   const tweetsContainer = document.getElementById("tweets");
 
-  if (!tweetsContainer) {
-    console.warn("Contenedor de tweets no encontrado.");
-    return;
-  }
+  if (!tweetsContainer || !georgeAwake) return;
 
   tweetsContainer.innerHTML = `
     <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-      <span>Actualizando...</span>
+      <span>Invocando a George...</span>
       <span class="spinner" style="width: 1em; height: 1em; border: 2px solid #ccc; border-top: 2px solid #333; border-radius: 50%; animation: spin 0.7s linear infinite;"></span>
     </div>
   `;
@@ -18,6 +17,11 @@ async function getTweets() {
     const data = await res.json();
 
     console.log("Tweets recibidos:", data);
+
+    if (data.tweetsData?.status === 429) {
+      tweetsContainer.innerHTML = "<p>🙃 Twitter dice: ¡Calmate, Hormi! Esperá un poco.</p>";
+      return;
+    }
 
     if (!data.tweets || data.tweets.length === 0) {
       throw new Error("No se encontraron tweets");
@@ -35,26 +39,41 @@ async function getTweets() {
   }
 }
 
-// Ejecutar al cargar
-getTweets();
-
-// Botón inteligente con delay
 const refreshButton = document.getElementById("refresh");
+const powerButton = document.getElementById("power");
 
 if (refreshButton) {
   refreshButton.addEventListener("click", () => {
+    if (!georgeAwake) return;
+
     refreshButton.disabled = true;
-    refreshButton.innerText = "Actualizando... 🔄";
+    refreshButton.innerText = "Actualizando...";
 
     getTweets().finally(() => {
       setTimeout(() => {
         refreshButton.disabled = false;
         refreshButton.innerText = "Actualizar";
-      }, 10000); 
+      }, 10000);
     });
   });
-} else {
-  console.warn("Botón #refresh no encontrado.");
+}
+
+if (powerButton) {
+  powerButton.addEventListener("click", () => {
+    georgeAwake = !georgeAwake;
+
+    powerButton.innerText = georgeAwake ? "Apagar a George" : "Encender a George";
+    refreshButton.disabled = !georgeAwake;
+
+    if (georgeAwake) {
+      getTweets();
+    } else {
+      const tweetsContainer = document.getElementById("tweets");
+      if (tweetsContainer) {
+        tweetsContainer.innerHTML = "<p>George está descansando 😴</p>";
+      }
+    }
+  });
 }
 
 
