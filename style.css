@@ -84,3 +84,49 @@ button:active {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.logo {
+  position: relative;
+}
+
+#antIcon {
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.3s ease;
+}
+
+.walking {
+  animation: walk 0.6s steps(2) infinite;
+}
+
+@keyframes walk {
+  0% { transform: translateX(0px); }
+  50% { transform: translateX(3px); }
+  100% { transform: translateX(0px); }
+}
+
+.zzz {
+  font-size: 1.2rem;
+  color: #555;
+  position: absolute;
+  top: -5px;
+  right: -15px;
+  animation: floatZzz 2s ease-in-out infinite;
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.zzz.active {
+  display: block;
+}
+
+@keyframes floatZzz {
+  0% { transform: translateY(0); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-15px); opacity: 0; }
+}
+
+#tweets {
+  display: none;
+}

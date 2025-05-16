@@ -1,8 +1,12 @@
 let georgeAwake = false;
 
-async function getTweets() {
-  const tweetsContainer = document.getElementById("tweets");
+const refreshButton = document.getElementById("refresh");
+const powerButton = document.getElementById("power");
+const tweetsContainer = document.getElementById("tweets");
+const antIcon = document.getElementById("antIcon");
+const zzz = document.getElementById("zzz");
 
+async function getTweets() {
   if (!tweetsContainer || !georgeAwake) return;
 
   tweetsContainer.innerHTML = `
@@ -39,9 +43,6 @@ async function getTweets() {
   }
 }
 
-const refreshButton = document.getElementById("refresh");
-const powerButton = document.getElementById("power");
-
 if (refreshButton) {
   refreshButton.addEventListener("click", () => {
     if (!georgeAwake) return;
@@ -62,20 +63,22 @@ if (powerButton) {
   powerButton.addEventListener("click", () => {
     georgeAwake = !georgeAwake;
 
-    powerButton.innerText = georgeAwake ? "Apagar a George" : "Encender a George";
+    powerButton.innerText = georgeAwake ? "Apagar a George" : "Despertar a George";
     refreshButton.disabled = !georgeAwake;
 
+    tweetsContainer.style.display = georgeAwake ? "block" : "none";
+
     if (georgeAwake) {
+      antIcon.classList.add("walking");
+      zzz.classList.remove("active");
       getTweets();
     } else {
-      const tweetsContainer = document.getElementById("tweets");
-      if (tweetsContainer) {
-        tweetsContainer.innerHTML = "<p>George está descansando 😴</p>";
-      }
+      antIcon.classList.remove("walking");
+      zzz.classList.add("active");
+      tweetsContainer.style.display = "none";
     }
   });
 }
-
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js')
