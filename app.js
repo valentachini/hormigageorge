@@ -1,5 +1,11 @@
 async function getTweets() {
   const tweetsContainer = document.getElementById("tweets");
+
+  if (!tweetsContainer) {
+    console.warn("Contenedor de tweets no encontrado.");
+    return;
+  }
+
   tweetsContainer.innerHTML = `
     <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
       <span>Actualizando...</span>
@@ -29,21 +35,28 @@ async function getTweets() {
   }
 }
 
+// Ejecutar al cargar
 getTweets();
 
+// Botón inteligente con delay
 const refreshButton = document.getElementById("refresh");
 
-refreshButton.addEventListener("click", () => {
-  refreshButton.disabled = true;
-  refreshButton.innerText = "Actualizando...";
+if (refreshButton) {
+  refreshButton.addEventListener("click", () => {
+    refreshButton.disabled = true;
+    refreshButton.innerText = "Actualizando... 🔄";
 
-  getTweets().finally(() => {
-    setTimeout(() => {
-      refreshButton.disabled = false;
-      refreshButton.innerText = "Actualizar";
-    }, 10000);
+    getTweets().finally(() => {
+      setTimeout(() => {
+        refreshButton.disabled = false;
+        refreshButton.innerText = "Actualizar";
+      }, 10000); 
+    });
   });
-});
+} else {
+  console.warn("Botón #refresh no encontrado.");
+}
+
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js')
