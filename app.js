@@ -5,14 +5,15 @@ async function getTweets() {
   tweetsContainer.innerHTML = "<p>Actualizando...</p>";
 
   try {
-    const url = `https://api.allorigins.win/raw?url=https://nitter.poast.org/${TWITTER_USERNAME}`;
-    console.log("Fetching from:", url);
+    const url = "/api/getTweets";
+    console.log("Fetching from backend:", url);
 
     const res = await fetch(url);
     const text = await res.text();
 
     console.log("HTML recibido:");
     console.log(text.slice(0, 1000));
+
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, "text/html");
 
@@ -30,6 +31,7 @@ async function getTweets() {
     console.error("Error capturado:", err);
   }
 }
+
 
 getTweets();
 
