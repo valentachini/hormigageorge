@@ -1,37 +1,28 @@
-const TWITTER_USERNAME = "Georgeclimapron";
-
 async function getTweets() {
   const tweetsContainer = document.getElementById("tweets");
   tweetsContainer.innerHTML = "<p>Actualizando...</p>";
 
   try {
-    const url = "/api/getTweets";
-    console.log("Fetching from backend:", url);
+    const res = await fetch("/api/getTweets");
+    const data = await res.json();
 
-    const res = await fetch(url);
-    const text = await res.text();
+    console.log("🧠 Tweets recibidos:", data);
 
-    console.log("HTML recibido:");
-    console.log(text.slice(0, 1000));
+    if (!data.tweets || data.tweets.length === 0) {
+      throw new Error("No se encontraron tweets");
+    }
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text, "text/html");
-
-    const tweetNodes = [...doc.querySelectorAll(".tweet-content")];
-    console.log(`Tweets encontrados: ${tweetNodes.length}`);
-
-    const tweets = tweetNodes
+    const tweetsHTML = data.tweets
       .slice(0, 2)
-      .map(el => `<p>${el.textContent.trim()}</p>`)
+      .map(t => `<p>${t}</p>`)
       .join("");
 
-    tweetsContainer.innerHTML = tweets || "<p>No se encontraron tweets.</p>";
+    tweetsContainer.innerHTML = tweetsHTML;
   } catch (err) {
     tweetsContainer.innerHTML = "<p>Error al cargar tweets 😢</p>";
-    console.error("Error capturado:", err);
+    console.error("❌ Error:", err);
   }
 }
-
 
 getTweets();
 
