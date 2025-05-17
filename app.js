@@ -31,10 +31,13 @@ async function getTweets() {
     if (!data.tweets || data.tweets.length === 0) {
       throw new Error("No se encontraron tweets");
     }
-
+    function formatTweet(text) {
+    const formatted = text.replace(/@(\w+)/g, '<span class="mention">@$1</span>');
+    return formatted;
+}
     const tweetsHTML = data.tweets
       .slice(0, 2)
-      .map(t => `<p>${t}</p>`)
+      .map(t => `<p>${formatTweet(t)}</p>`)
       .join("");
 
     tweetsContainer.innerHTML = tweetsHTML;
