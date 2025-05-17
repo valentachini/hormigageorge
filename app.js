@@ -3,8 +3,11 @@ let georgeAwake = false;
 const refreshButton = document.getElementById("refresh");
 const powerButton = document.getElementById("power");
 const tweetsContainer = document.getElementById("tweets");
-const antIcon = document.getElementById("antIcon");
+const antIcon = document.getElementById("antIcon"); 
 const zzz = document.getElementById("zzz");
+
+zzz.classList.remove("hidden");
+tweetsContainer.style.display = "none";
 
 async function getTweets() {
   if (!tweetsContainer || !georgeAwake) return;
@@ -12,15 +15,13 @@ async function getTweets() {
   tweetsContainer.innerHTML = `
     <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
       <span>Invocando a George...</span>
-      <span class="spinner" style="width: 1em; height: 1em; border: 2px solid #ccc; border-top: 2px solid #333; border-radius: 50%; animation: spin 0.7s linear infinite;"></span>
+      <span class="spinner"></span>
     </div>
   `;
 
   try {
     const res = await fetch("/api/getTweets");
     const data = await res.json();
-
-    console.log("Tweets recibidos:", data);
 
     if (data.tweetsData?.status === 429) {
       tweetsContainer.innerHTML = "<p>🙃 Twitter dice: ¡Calmate, Hormi! Esperá un poco.</p>";
@@ -63,18 +64,17 @@ if (powerButton) {
   powerButton.addEventListener("click", () => {
     georgeAwake = !georgeAwake;
 
-    powerButton.innerText = georgeAwake ? "Apagar a George" : "Despertar a George";
+    powerButton.innerText = georgeAwake ? "Apagar a George" : "Encender a George";
     refreshButton.disabled = !georgeAwake;
 
-    tweetsContainer.style.display = georgeAwake ? "block" : "none";
-
     if (georgeAwake) {
-      antIcon.classList.add("walking");
-      zzz.classList.remove("active");
+      zzz.classList.add("hidden");
+      antIcon?.classList.add("walking");
+      tweetsContainer.style.display = "block";
       getTweets();
     } else {
-      antIcon.classList.remove("walking");
-      zzz.classList.add("active");
+      zzz.classList.remove("hidden");
+      antIcon?.classList.remove("walking");
       tweetsContainer.style.display = "none";
     }
   });

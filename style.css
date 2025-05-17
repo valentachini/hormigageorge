@@ -113,15 +113,18 @@ button:active {
   color: #555;
   position: absolute;
   top: -5px;
-  right: -15px;
+  z-index: 1;
+  right: 60%;
   animation: floatZzz 2s ease-in-out infinite;
-  opacity: 0;
+  opacity: 1;
+  visibility: visible;
   pointer-events: none;
-  display: none;
+  transition: opacity 0.3s ease;
 }
 
-.zzz.active {
-  display: block;
+.zzz.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 @keyframes floatZzz {
@@ -130,6 +133,3 @@ button:active {
   100% { transform: translateY(-15px); opacity: 0; }
 }
 
-#tweets {
-  display: none;
-}
